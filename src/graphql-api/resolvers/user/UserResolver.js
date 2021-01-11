@@ -2,12 +2,27 @@
 
 const bcrypt = require('bcrypt')
 const UsersModel = require('../../../models/user/UsersModel')
-const { Op } = require('sequelize')
-const { deCode } = require('../../../helpers')
+const UserProfilesModel = require('../../../models/user/UserProfilesModel')
+const { deCode, linkBelongsTo } = require('../../../helpers')
 
 const UserResolveQueries = {
-    getUsers: async () => await UsersModel.findAll(),
-    getUserById: async (root, { uId }) => await UsersModel.findOne({ where: { uId: deCode(uId) } }),
+    getUsers: async () => {
+        // Relacion de tablas
+        linkBelongsTo(UsersModel, UserProfilesModel, 'uId', 'uId')
+
+        return await UsersModel.findAll({
+            include: [{ model: UserProfilesModel }],            
+        })
+    },
+    getUserById: async (root, { uId }) => {
+        // Relacion de tablas
+        linkBelongsTo(UsersModel, UserProfilesModel, 'uId', 'uId')
+
+        return await UsersModel.findOne({
+            include: [{ model: UserProfilesModel }],
+            where: { uId: deCode(uId) }
+        })
+    },
     getUserByCredentials: async (root, { uEmail, uPassword }) => {
         const uData = await UsersModel.findOne({ where: { uEmail: uEmail } })
         if (!uData || !bcrypt.compareSync(uPassword, uData.uPassword) || uData?.uState !== 1) return null

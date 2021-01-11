@@ -24,7 +24,24 @@ const deCode = value => {
     return Math.round(((((v * 472793) / 288413) / 562841) / 793927) / 998161)
 }
 
+const linkBelongsTo = (modelOne, modelTwo, target, foreign) => {
+    return modelOne.belongsTo(modelTwo, {
+        targetKey: target,
+        foreignKey: foreign
+    })
+}
+
+const linkHasMany = (modelOne, modelTwo, target, foreign) => {
+    return modelOne.hasMany(modelTwo, {
+        targetKey: target,
+        foreignKey: foreign
+    })
+}
+
+
 module.exports = {
     enCode,
-    deCode
+    deCode,
+    linkBelongsTo,
+    linkHasMany
 }
