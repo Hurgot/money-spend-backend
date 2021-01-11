@@ -1,0 +1,12 @@
+{
+  "name": "money-spend-backend",
+  "version": "1.0.0",
+  "description": "Backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["Contabilidad", "Cuentas", "Dinero", "Gastos"],
+  "author": "Hugo Gutierrez",
+  "license": "MIT"
+}
