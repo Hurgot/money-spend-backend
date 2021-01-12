@@ -1,8 +1,8 @@
 'use strict'
 
 const { makeExecutableSchema } = require('graphql-tools')
-const { UserResolveQueries, UserResolveMutations } = require('./resolvers/user/UserResolver')
-const { UserProfileResolverQueries, UserProfileResolversMutations } = require('./resolvers/user/UserProfileResolver')
+const { UserResolverQueries, UserResolverMutations, UserResolverTypes } = require('./resolvers/user/UserResolver')
+const { UserProfileResolverQueries, UserProfileResolverMutations } = require('./resolvers/user/UserProfileResolver')
 
 const typeDefs = `
     "User type."
@@ -29,7 +29,6 @@ const typeDefs = `
     "User Profile Type."
     type UserProfile {
         upId: ID!
-        user: User
         upName: String!
         upLastname: String!
         upPhone: String
@@ -79,12 +78,13 @@ module.exports = makeExecutableSchema({
     typeDefs,
     resolvers: {
         Query: {
-            ...UserResolveQueries,
+            ...UserResolverQueries,
             ...UserProfileResolverQueries
         },
         Mutation: {
-            ...UserResolveMutations,
-            ...UserProfileResolversMutations
-        }
+            ...UserResolverMutations,
+            ...UserProfileResolverMutations
+        },
+        ...UserResolverTypes
     }
 })
